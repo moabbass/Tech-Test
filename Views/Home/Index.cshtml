@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Verto.Models.ViewModel>
+@{
+   ViewData["Title"] = "index";
+}    
+
+@{
+
+    //IEnumerable<Detail> details = ViewData["Details"] as IEnumerable<Detail>;
+   // IEnumerable<Product> products = ViewData["Products"] as IEnumerable<Product>;
+    //IEnumerable<SpecialOffer> specialOffers = ViewData["SpecialOffers"] as IEnumerable<SpecialOffer>;
+}
+
+
+<table >
+    <thead>
+        <tr>
+            <th>
+                name
+            </th>
+            <th>
+                code
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            Type t = item.GetType();
+            if(t.Equals(typeof(List<Detail>))){
+                var details = item;
+                foreach (var detail in details)
+                {
+                    <tr>
+                        <td>
+                            @detail.name
+                        </td>
+                        <td>
+                            @detail.content
+                        </td>
+                    </tr>
+                }
+                
+            }
+            
+        }
+    </tbody>
+</table>
+
+
+@*
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body>    
+
+    <div class="w3-row-padding">
+        <div class="w3-third" asp-action="Index" asp-controller="Details">            
+         <h2>New Products</h2>           
+            <p name="New Products"></p>
+            <button>New products</button>
+        </div>
+
+        <div class="w3-third">
+            <h2>Field Events</h2>            
+            <p name="Field Events"></p>
+            <button>View Events</button>
+        </div>
+
+        <div class="w3-third">
+            <h2>Latest News</h2>            
+            <p name="Latest News"></p>
+            <button>Read Article</button>
+        </div>
+        <div class="w3-third">
+            <h2>Gallery</h2>            
+            <p name="Gallery"></p>
+            <button>View Gallery</button>
+        </div>
+    </div>
+
+</body>
+*@
