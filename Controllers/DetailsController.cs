@@ -22,11 +22,9 @@ namespace Verto.Controllers
         // GET: Details
         public async Task<IActionResult> Index()
         {
-
-            //ViewData["Details"]= _context.Detail != null ? View(await _context.Detail.ToListAsync()) : Problem("Entity set 'ApplicationDbContext.Detail'  is null.");
-
-            //return View();
-            return _context.Detail != null ? View(await _context.Detail.ToListAsync()) : Problem("Entity set 'ApplicationDbContext.Detail'  is null.");
+              return _context.Detail != null ? 
+                          View(await _context.Detail.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Detail'  is null.");
         }
 
         // GET: Details/Details/5
@@ -58,7 +56,7 @@ namespace Verto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,name,content")] Detail detail)
+        public async Task<IActionResult> Create([Bind("Id,name,content,buttonName,picture")] Detail detail)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +88,7 @@ namespace Verto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,name,content")] Detail detail)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,name,content,buttonName,picture")] Detail detail)
         {
             if (id != detail.Id)
             {
@@ -161,11 +159,5 @@ namespace Verto.Controllers
         {
           return (_context.Detail?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-
-        public async Task<IActionResult> getDetails()
-        {
-            return View(await _context.Detail.ToListAsync());
-        }
     }
 }
-

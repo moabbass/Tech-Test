@@ -18,6 +18,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.content)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.buttonName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.picture)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -29,6 +35,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.buttonName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.picture)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

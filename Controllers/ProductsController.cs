@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +22,9 @@ namespace Verto.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-           // ViewData["Products"] = _context.Product != null ? View(await _context.Product.ToListAsync()) : Problem("Entity set 'ApplicationDbContext.Product'  is null.");
-           // return View();
-           return _context.Product != null ?View(await _context.Product.ToListAsync()) :Problem("Entity set 'ApplicationDbContext.Product'  is null.");
+              return _context.Product != null ? 
+                          View(await _context.Product.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Product'  is null.");
         }
 
         // GET: Products/Details/5
@@ -57,7 +56,7 @@ namespace Verto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,price")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,name,price,picture")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +89,7 @@ namespace Verto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,price")] Product product)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,name,price,picture")] Product product)
         {
             if (id != product.Id)
             {
@@ -152,16 +151,14 @@ namespace Verto.Controllers
             {
                 _context.Product.Remove(product);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(Guid id)
         {
-            return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-
-
     }
 }

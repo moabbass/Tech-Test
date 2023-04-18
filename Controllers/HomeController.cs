@@ -4,30 +4,26 @@ using Verto.Models;
 using Verto.Data;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Verto.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            //ViewData["Details"] = _context.Detail != null ? View(await _context.Detail.ToListAsync()) : Problem("Entity set 'ApplicationDbContext.Detail'  is null.");
-            //ViewData["Products"] = _context.Product != null ? View(await _context.Product.ToListAsync()) : Problem("Entity set 'ApplicationDbContext.Product'  is null.");
-            //ViewData["SpecialOffers"] = _context.SpecialOffer != null ? View(await _context.SpecialOffer.ToListAsync()) : Problem("Entity set 'ApplicationDbContext.SpecialOffer'  is null.");
-
-            ViewBag.Message = "Welcome to my demo!";
-            ViewModel mymodel = new ViewModel();
-            mymodel.details = (IEnumerable<Detail>)await _context.Detail.ToListAsync();
-            mymodel.products = (IEnumerable<Product>)await _context.Product.ToListAsync();
-            mymodel.specialOffers =(IEnumerable<SpecialOffer>) await _context.SpecialOffer.ToListAsync();
-
-            return View(mymodel);            
+        public async Task< IActionResult> Index()
+        {           
+            List<Detail> details = await _context.Detail.ToListAsync();
+            List<Product> products = await _context.Product.ToListAsync();
+            List<SpecialOffer> specialOffers = await _context.SpecialOffer.ToListAsync();
+            var tupelModel = new Tuple<List<Detail>, List<Product>, List<SpecialOffer>>(details, products, specialOffers);
+            return View(tupelModel);            
         }
 
         public IActionResult Privacy()

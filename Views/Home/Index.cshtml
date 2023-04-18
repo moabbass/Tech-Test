@@ -1,6 +1,6 @@
-﻿@model IEnumerable<Verto.Models.ViewModel>
+﻿@model Tuple<List<Detail>,List<Product>,List<SpecialOffer>>
 @{
-   ViewData["Title"] = "index";
+    ViewBag.Title = "Home Page";
 }    
 
 @{
@@ -10,42 +10,46 @@
     //IEnumerable<SpecialOffer> specialOffers = ViewData["SpecialOffers"] as IEnumerable<SpecialOffer>;
 }
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<table >
-    <thead>
-        <tr>
-            <th>
-                name
-            </th>
-            <th>
-                code
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            Type t = item.GetType();
-            if(t.Equals(typeof(List<Detail>))){
-                var details = item;
-                foreach (var detail in details)
-                {
-                    <tr>
-                        <td>
-                            @detail.name
-                        </td>
-                        <td>
-                            @detail.content
-                        </td>
-                    </tr>
-                }
-                
+
+<body>
+
+
+    <div class="row" >
+            @foreach(Detail item in Model.Item1)
+            {
+                <div class="column"> 
+                    <h2>@item.name</h2>
+                    <p>@item.content</p>
+                    <button>@item.buttonName</button>
+                </div>
             }
-            
+        </div> 
+
+</body>
+
+<div class="row" >
+        @foreach (SpecialOffer item in Model.Item3)
+        {
+        <div class="column">
+                <h2>@item.type</h2>
+                <p>@item.offer</p>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+
+
+<div class="row">
+        @foreach (Product item in Model.Item2)
+        {
+        <div class="column">
+                <h2>@item.name</h2>
+                <p>@item.picture</p>
+            </div>
+        }
+    </div>
+
 
 
 @*

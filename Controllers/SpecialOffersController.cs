@@ -22,10 +22,9 @@ namespace Verto.Controllers
         // GET: SpecialOffers
         public async Task<IActionResult> Index()
         {
-            //ViewData["SpecialOffers"] = _context.SpecialOffer != null ? View(await _context.SpecialOffer.ToListAsync()) : Problem("Entity set 'ApplicationDbContext.SpecialOffer'  is null.");
-
-            //return View();
-            return _context.SpecialOffer != null ? View(await _context.SpecialOffer.ToListAsync()) :Problem("Entity set 'ApplicationDbContext.SpecialOffer'  is null.");
+              return _context.SpecialOffer != null ? 
+                          View(await _context.SpecialOffer.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.SpecialOffer'  is null.");
         }
 
         // GET: SpecialOffers/Details/5
@@ -57,7 +56,7 @@ namespace Verto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,type,offer")] SpecialOffer specialOffer)
+        public async Task<IActionResult> Create([Bind("ID,type,offer,picture")] SpecialOffer specialOffer)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +89,7 @@ namespace Verto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ID,type,offer")] SpecialOffer specialOffer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ID,type,offer,picture")] SpecialOffer specialOffer)
         {
             if (id != specialOffer.ID)
             {
