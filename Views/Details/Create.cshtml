@@ -7,10 +7,15 @@
 <h1>Create</h1>
 
 <h4>Detail</h4>
+
+<Triggers>
+    <asp:PostBackTrigger ControlID="btnSave" />
+    <asp:AsyncPostBackTrigger ControlID="btnAsyncSave" />
+</Triggers>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" runat="server" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="name" class="control-label"></label>
@@ -23,17 +28,22 @@
                 <span asp-validation-for="content" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="picture" class="control-label"></label>
+                <input asp-for="picture" type="file" class="form-control" />
+                <span asp-validation-for="picture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="buttonName" class="control-label"></label>
                 <input asp-for="buttonName" class="form-control" />
                 <span asp-validation-for="buttonName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="picture" class="control-label"></label>
-                <input asp-for="picture" class="form-control" />
-                <span asp-validation-for="picture" class="text-danger"></span>
+                <label asp-for="pictureName" class="control-label"></label>
+                <input asp-for="pictureName" class="form-control" />
+                <span asp-validation-for="pictureName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" ControlID="btnAsyncSave" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

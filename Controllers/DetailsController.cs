@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Verto.Data;
 using Verto.Models;
+using Microsoft.AspNetCore.Http;
+using System.Web;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Verto.Controllers
 {
@@ -14,9 +17,14 @@ namespace Verto.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public DetailsController(ApplicationDbContext context)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        
+
+        public DetailsController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            this.webHostEnvironment = webHostEnvironment;
+            webHostEnvironment = hostEnvironment;
         }
 
         // GET: Details
@@ -56,7 +64,7 @@ namespace Verto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,name,content,buttonName,picture")] Detail detail)
+        public async Task<IActionResult> Create([Bind("Id,name,content,buttonName,pictureName")] Detail detail)
         {
             if (ModelState.IsValid)
             {
@@ -88,13 +96,13 @@ namespace Verto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,name,content,buttonName,picture")] Detail detail)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,name,content,buttonName,pictureName")] Detail detail)
         {
             if (id != detail.Id)
             {
                 return NotFound();
             }
-
+            detail =uploadImage(detail);
             if (ModelState.IsValid)
             {
                 try
@@ -136,6 +144,16 @@ namespace Verto.Controllers
             return View(detail);
         }
 
+        public async Task<IActionResult> Redirecting(Detail detail)
+        {
+            if(detail == null)
+            {
+                return View();
+            }
+            return RedirectToAction(detail.Id.ToString(),"UpdateDetailPicture");
+        }
+
+
         // POST: Details/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -158,6 +176,84 @@ namespace Verto.Controllers
         private bool DetailExists(int id)
         {
           return (_context.Detail?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+
+        private Detail uploadImage(Detail detail)
+        {
+            string uniqueFileName = null;
+
+            if (detail.picture != null)
+            {
+                string imageUploadedFolder = Path.Combine(webHostEnvironment.WebRootPath, "UploadedImages");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + detail.picture.FileName;
+                string filePath = Path.Combine(imageUploadedFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    detail.picture.CopyTo(fileStream);
+                }
+
+                detail.pictureName = uniqueFileName;
+            }
+            return detail;
+        }        
+
+        public ActionResult DetailPictureUpload(Detail detail)
+        {
+            string uniqueFileName = null;
+            if (detail.picture != null)
+            {
+                string imageUploadedFolder = Path.Combine(webHostEnvironment.WebRootPath, "UploadedImages");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + detail.picture.FileName;
+                string filePath = Path.Combine(imageUploadedFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    detail.picture.CopyTo(fileStream);
+                }
+
+                detail.pictureName = uniqueFileName; 
+                _context.Update(detail);
+                 _context.SaveChanges();
+                return RedirectToAction("Home");
+            }
+            
+            return View();
+        }
+        
+
+
+        private void uploadImage2()
+        {
+            //string strFolder = Server.MapPath("./");
+            //string strFileName = this.test.PostedFile.FileName;
+            //strFileName = Path.GetFileName(strFileName);
+            //if (test.Value != "")
+            //{
+            //    // Create the folder if it does not exist.
+            //    if (!Directory.Exists(strFolder))
+            //    {
+            //        Directory.CreateDirectory(strFolder);
+            //    }
+            //    // Save the uploaded file to the server.
+            //    strFilePath = strFolder + strFileName;
+            //    if (File.Exists(strFilePath))
+            //    {
+            //        lblUploadResult.Text = strFileName + " already exists on the server!";
+            //    }
+            //    else
+            //    {
+            //        oFile.PostedFile.SaveAs(strFilePath);
+            //        lblUploadResult.Text = strFileName + " has been successfully uploaded.";
+            //    }
+            //}
+            //else
+            //{
+            //    lblUploadResult.Text = "Click 'Browse' to select the file to upload.";
+            //}
+            //// Display the result of the upload.
+            //frmConfirmation.Visible = true;
         }
     }
 }

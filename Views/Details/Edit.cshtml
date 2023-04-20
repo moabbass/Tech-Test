@@ -6,11 +6,17 @@
 
 <h1>Edit</h1>
 
+
 <h4>Detail</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="col-md-4">        
+
+        <form id="form1" >
+            <Button asp-action="UpdateDetailPicture" runat="server" ID="btnsubmit" Text="Upload Image" class="btn btn-primary">Add Picture</Button>
+        </form>
+
+        <form asp-action="Edit" enctype="multipart/form-data" runat="server" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -24,26 +30,39 @@
                 <span asp-validation-for="content" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="picture" class="control-label"></label>
+                <input NAME="test" id=" " asp-for="picture" type="file" runat="server" class="form-control" />
+                <span asp-validation-for="picture" runat="server" class="text-danger"></span>
+           </div>
+            <div class="form-group">
                 <label asp-for="buttonName" class="control-label"></label>
                 <input asp-for="buttonName" class="form-control" />
                 <span asp-validation-for="buttonName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="picture" class="control-label"></label>
-                <input asp-for="picture" class="form-control" />
-                <span asp-validation-for="picture" class="text-danger"></span>
+                <label asp-for="pictureName" class="control-label"></label>
+                <input asp-for="pictureName" class="form-control" />
+                <span asp-validation-for="pictureName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" runat="server" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
+<form id="form1">
+    <Button asp-action="UpdateDetailPicture" runat="server" ID="btnsubmit" Text="Upload Image" class="btn btn-primary">Add Picture</Button>
+</form>
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
+
+@{
+   
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
